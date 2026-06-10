@@ -37,8 +37,15 @@ with warnings.catch_warnings():
         stability,
     )
 
-from openfermionpyscf import PyscfMolecularData
-from openfermionpyscf._run_pyscf import compute_integrals
+try:
+    from openfermionpyscf import PyscfMolecularData
+    from openfermionpyscf._run_pyscf import compute_integrals
+except ModuleNotFoundError as e:
+    raise ModuleNotFoundError(
+        "Molecular Hamiltonian generation requires openfermionpyscf. Install "
+        "the extra with: pip install 'benchq[pyscf]' (pyscf does not build "
+        "on native Windows; use Linux or WSL)."
+    ) from e
 from orquestra import sdk
 from pyscf import gto, mp, scf
 
