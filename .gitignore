@@ -149,3 +149,6 @@ juliapkg.json
 
 # ignore jabalizer files
 jabalizer_temp/
+
+.venv-*
+*.output

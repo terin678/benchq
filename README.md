@@ -10,6 +10,27 @@ It is tested with Python 3.9-3.11 on Linux and may or may not work with other Py
 
 To use the development version of Bench-Q, clone this repository and run `pip install .` from the top-level directory.
 
+### Windows support (this fork)
+
+This fork installs and runs on native Windows with Python 3.9-3.11. The core
+resource estimation pipeline (graph-state compilation, `GraphResourceEstimator`,
+the bundled examples like `examples/ex_1_from_qasm.py`) works out of the box;
+Julia is provisioned automatically on first use, same as on Linux.
+
+What changed relative to upstream:
+
+- `openfermion[resources]` (which unconditionally pulls in `pyscf`, a package
+  that does not build on native Windows for lack of BLAS) is now plain
+  `openfermion` in the core dependencies. The `resources` extra moved into the
+  existing `pyscf` install extra where its functionality is actually used.
+- Modules that genuinely require pyscf (molecular Hamiltonian ingestion, QPE
+  problem embeddings, double-factorized block encodings) now raise an
+  actionable error pointing at `pip install 'benchq[pyscf]'` instead of a bare
+  `ModuleNotFoundError`. Those features still require Linux or WSL.
+
+Note: Python 3.12+ remains unsupported (upstream pins `setuptools<=65.6.3`,
+`pandas==1.5.3`, and `numba~=0.57`, all of which predate 3.12).
+
 ### Extra dependencies
 
 #### Julia

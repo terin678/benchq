@@ -20,7 +20,14 @@ with warnings.catch_warnings():
     )
 
     # we need to disable pyscf GC as it throws around bunch of warnings
-    import pyscf
+    try:
+        import pyscf
+    except ModuleNotFoundError as e:
+        raise ModuleNotFoundError(
+            "Molecular Hamiltonian generation requires pyscf. Install the "
+            "extra with: pip install 'benchq[pyscf]' (pyscf does not build "
+            "on native Windows; use Linux or WSL)."
+        ) from e
 
     pyscf.gto.mole.DISABLE_GC = True
 

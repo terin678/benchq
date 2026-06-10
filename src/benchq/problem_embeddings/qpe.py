@@ -6,7 +6,16 @@ from math import ceil
 from typing import Tuple
 
 import numpy as np
-from openfermion.resource_estimates import df, sf
+
+try:
+    from openfermion.resource_estimates import df, sf
+except ModuleNotFoundError as e:
+    raise ModuleNotFoundError(
+        "benchq.problem_embeddings.qpe requires openfermion's resource_estimates "
+        "module, which depends on pyscf. Install the extra with: "
+        "pip install 'benchq[pyscf]' (pyscf does not build on native Windows; "
+        "use Linux or WSL)."
+    ) from e
 
 from benchq.problem_ingestion.molecular_hamiltonians import (
     compute_lambda_df,
