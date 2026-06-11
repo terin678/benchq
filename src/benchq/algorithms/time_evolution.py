@@ -56,7 +56,9 @@ def qsp_time_evolution_algorithm(
 # TODO: This method of calculating number of steps is not exact.
 # It doesn't take into account the prefactor coming from the Hamiltonian.
 def _n_trotter_steps(evolution_time, total_trotter_error) -> int:
-    return np.ceil(evolution_time / total_trotter_error)
+    # int() matters: get_trotter_program repeats its subroutine sequence
+    # with [0] * steps, and numpy.float64 cannot repeat a list.
+    return int(np.ceil(evolution_time / total_trotter_error))
 
 
 def trotter_time_evolution_algorithm(
